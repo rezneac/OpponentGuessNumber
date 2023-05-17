@@ -1,3 +1,8 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  //fixing android or ios not existing target files error
+  "compilerOptions": {
+    "strict": true,
+    "moduleSuffixes": [".android", ".ios", ""]
+  }
 }

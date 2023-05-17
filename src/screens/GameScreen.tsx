@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, Alert, FlatList} from 'react-native';
+import {Text, View, StyleSheet, Alert, FlatList, useWindowDimensions} from 'react-native';
 import Title from '../components/ui/Title';
 import NumberContainer from '../components/game/NumberContainer';
 import PrimaryButton from '../components/ui/PrimaryButton';
@@ -30,6 +30,7 @@ const GameScreen = ({userNumber, onGameOver}: iProp) => {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState<number>(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
+  const {width, height} = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess === userNumber) {
@@ -63,9 +64,8 @@ const GameScreen = ({userNumber, onGameOver}: iProp) => {
 
   const guessRoundsListLenght = guessRounds.length;
 
-  return (
-    <View style={styles.screen}>
-      <Title>Opponent's Guess</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
@@ -82,7 +82,35 @@ const GameScreen = ({userNumber, onGameOver}: iProp) => {
           </View>
         </View>
       </Card>
-      <View style={styles.listContainer}>
+    </>
+  );
+
+  if (width > 500) {
+    content = (
+      <>
+        {/* <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText> */}
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Icon name="md-remove" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Icon name="md-add" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <Title>Opponent's Guess</Title>
+      {content}
+      <View style={[styles.listContainer, {padding: width < 380 ? 8 : 16}]}>
         {/* {guessRounds.map(guessRound => (
           <Text key={guessRound}>{guessRound}</Text>
         ))} */}
@@ -104,6 +132,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    alignItems: 'center',
   },
   instructionText: {
     marginBottom: 12,
@@ -117,6 +146,10 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 16,
+  },
+  buttonsContainerWide: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
