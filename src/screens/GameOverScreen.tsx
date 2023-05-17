@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: Colors.primary800,
     overflow: 'hidden',
-    margin: 36,
+    marginVertical: 26,
+    alignSelf: 'center',
   },
   image: {
     width: '100%',

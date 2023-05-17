@@ -17,8 +17,9 @@ const App = () => {
     setGameIsOver(false);
   };
 
-  const gameOverHandler = () => {
+  const gameOverHandler = (numberOfRounds: number) => {
     setGameIsOver(true);
+    setGuessRounds(numberOfRounds);
   };
 
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
